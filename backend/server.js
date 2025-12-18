@@ -7,11 +7,10 @@ const upload = multer();
 const productRoute = require('./routes/api/productRoute');
 
 // Connecting to the Database
-let mongodb_url = 'mongodb://localhost/';
+let mongodb_url = "mongodb+srv://admin:admin123@cluster0.m5h22xm.mongodb.net/?appName=Cluster0";
 let dbName = 'yolomy';
-
-// define a url to connect to the database
-const MONGODB_URI = process.env.MONGODB_URI || mongodb_url + dbName
+let defaultMongoUrl = "mongodb+srv://admin:admin123@cluster0.m5h22xm.mongodb.net/?appName=Cluster0" + dbName;
+const MONGODB_URI = process.env.MONGODB_URI || defaultMongoUrl
 mongoose.connect(MONGODB_URI,{useNewUrlParser: true, useUnifiedTopology: true  } )
 let db = mongoose.connection;
 
@@ -41,7 +40,7 @@ app.use(cors());
 app.use('/api/products', productRoute)
 
 // Define the PORT
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 4000
 
 app.listen(PORT, ()=>{
     console.log(`Server listening on port ${PORT}`)
