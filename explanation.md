@@ -95,11 +95,6 @@ docker build -t <username>/yolomy-frontend:latest ./client
 
 ```
 
-
-### Docker Hub Repository Structure
-
-
-
 ### Using Images from Docker Hub
 
 **Pull and run images:**
@@ -111,16 +106,6 @@ docker pull ianmaina/yolo-backend:2.0.0
 docker run -d -p 4000:4000 yolo-backend:2.0.0
 ```
 
-**Update docker-compose.yml to use Docker Hub images:**
-```yaml
-services:
-  backend:
-    image: <username>/yolomy-backend:latest
-    # Remove build section when using pre-built images
-    # build:
-    #   context: ./backend
-    #   dockerfile: Dockerfile
-```
 
 
 Key considerations:
