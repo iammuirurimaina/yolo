@@ -93,10 +93,8 @@ docker build -t <username>/yolomy-backend:latest ./backend
 docker build -t <username>/yolomy-frontend:latest ./client
 ```
 
-```
-
 ### Using Images from Docker Hub
-
+```
 **Pull and run images:**
 ```bash
 # Pull image
