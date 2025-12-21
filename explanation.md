@@ -70,6 +70,16 @@
 
 ## 5. Docker Hub Image Management
 
+### Dockerhub screenshots
+
+
+https://hub.docker.com/r/ianmaina/yolo-frontend
+<img width="1440" height="865" alt="Screenshot 2025-12-21 at 12 36 28" src="https://github.com/user-attachments/assets/f359550d-6e1c-43d6-a894-3d073987d984" />
+
+https://hub.docker.com/r/ianmaina/yolo-backend
+<img width="1438" height="859" alt="Screenshot 2025-12-21 at 12 35 58" src="https://github.com/user-attachments/assets/423aaf1a-2a42-4692-a5e4-becac7e478ae" />
+
+
 
 
 ### Building Images
