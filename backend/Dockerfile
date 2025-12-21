@@ -6,7 +6,7 @@ WORKDIR /app
 #Copy package files first (Docker layer caching optimization)
 COPY package*.json ./
 # Step 4: Install only production dependencies
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 COPY . .
 
 EXPOSE 4000
