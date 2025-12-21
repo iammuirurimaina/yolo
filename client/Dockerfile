@@ -17,4 +17,16 @@ COPY . .
 RUN NODE_OPTIONS=--openssl-legacy-provider npm run build
 
 
+# STAGE 2: Production Stage
 
+# This stage creates the final, small image that only serves static files
+FROM nginx:alpine
+
+# Copy the built static files from the builder stage
+
+COPY --from=builder /app/build /usr/share/nginx/html
+
+# Expose port 80 (nginx default port)
+EXPOSE 80
+# Start nginx automatically
+CMD ["nginx", "-g", "daemon off;"]
