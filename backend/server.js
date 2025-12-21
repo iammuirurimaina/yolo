@@ -39,6 +39,15 @@ app.use(cors());
 // Use Route
 app.use('/api/products', productRoute)
 
+// Serve static files from React app
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+// Handle React routing, return all requests to React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+});
+
 // Define the PORT
 const PORT = process.env.PORT || 4000
 
