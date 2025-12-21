@@ -94,8 +94,9 @@ docker build -t <username>/yolomy-frontend:latest ./client
 ```
 
 ### Using Images from Docker Hub
-```
 **Pull and run images:**
+```
+
 ```bash
 # Pull image
 docker pull ianmaina/yolo-backend:2.0.0
