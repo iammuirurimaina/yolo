@@ -19,6 +19,30 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+    networks:
+      - yolomy-network
+
+  # Backend Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: yolomy-backend
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - MONGODB_URI=mongodb://mongodb:27017/yolomy
+      - NODE_ENV=production
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - yolomy-network
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
 
 # Named volumes for data persistence
 volumes:
@@ -26,3 +50,8 @@ volumes:
     driver: local
   mongodb_config:
     driver: local
+
+# Bridge network for container communication
+networks:
+  yolomy-network:
+    driver: bridge
