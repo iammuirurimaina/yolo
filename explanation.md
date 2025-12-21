@@ -87,15 +87,15 @@ https://hub.docker.com/r/ianmaina/yolo-backend
 **Build individual service images:**
 ```bash
 # Build backend image
-docker build -t <username>/yolomy-backend:latest ./backend
+docker build -t <username>/yolo-backend:latest ./backend
 
 # Build frontend image
-docker build -t <username>/yolomy-frontend:latest ./client
+docker build -t <username>/yolo-frontend:latest ./client
 ```
 
 ### Using Images from Docker Hub
 **Pull and run images:**
-```
+
 
 ```bash
 # Pull image
