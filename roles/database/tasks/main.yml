@@ -1,0 +1,16 @@
+---
+- name: Run MongoDB container
+  docker_container:
+    name: "{{ mongo_container }}"
+    image: "{{ mongo_image }}"
+    state: started
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ docker_network }}"
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+    env:
+      MONGO_INITDB_DATABASE: yolo

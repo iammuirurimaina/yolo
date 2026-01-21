@@ -1,0 +1,23 @@
+---
+- name: Build Backend Image
+  docker_image:
+    name: "{{ backend_image }}"
+    build:
+      path: "{{ project_root }}/backend"
+    source: build
+    force_source: yes
+
+- name: Run Backend Container
+  docker_container:
+    name: "{{ backend_container }}"
+    image: "{{ backend_image }}"
+    state: started
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ docker_network }}"
+    ports:
+      - "{{ backend_port }}:{{ backend_port }}"
+    env:
+      PORT: "{{ backend_port }}"
+      MONGODB_URI: "mongodb://{{ mongo_container }}:27017/yolo"
+      NODE_ENV: "production"

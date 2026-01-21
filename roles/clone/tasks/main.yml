@@ -1,0 +1,7 @@
+---
+- name: Clone the repository
+  git:
+    repo: "{{ repo_url }}"
+    dest: "{{ project_root }}"
+    version: main
+    force: yes

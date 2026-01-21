@@ -1,0 +1,32 @@
+---
+- hosts: all
+  become: yes
+  vars_files:
+    - vars/main.yml
+
+  tasks:
+    - name: Setup Environment
+      block:
+        - include_role:
+            name: common
+        - include_role:
+            name: clone
+      tags: setup
+
+    - name: Deploy Database
+      block:
+        - include_role:
+            name: database
+      tags: database
+
+    - name: Deploy Backend
+      block:
+        - include_role:
+            name: backend
+      tags: backend
+
+    - name: Deploy Frontend
+      block:
+        - include_role:
+            name: frontend
+      tags: frontend

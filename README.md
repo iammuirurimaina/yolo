@@ -89,6 +89,7 @@ docker-compose restart
 
 ```bash
 docker-compose up -d --build
+```
 
 ## API Endpoints
 
@@ -124,6 +125,44 @@ Ensure MongoDB container is healthy:
 docker-compose ps mongodb
 docker-compose logs mongodb
 ```
+
+## Deployment with Vagrant and Ansible
+
+This project includes a fully automated deployment setup using Vagrant and Ansible.
+
+### Prerequisites
+- Vagrant installed
+- VirtualBox installed
+
+### Steps to Deploy
+
+1. **Initialize the VM**:
+   Navigate to the project root and run:
+   ```bash
+   vagrant up
+   ```
+   This command will:
+   - Provision an Ubuntu 20.04 VM.
+   - Install Docker, Git, and other dependencies.
+   - Clone the repository inside the VM.
+   - Build and run the MongoDB, Backend, and Frontend containers.
+
+2. **Access the Application**:
+   Once the provisioning is complete, the application will be available at:
+   - **Frontend**: http://192.168.56.56:3000
+   - **Backend API**: http://192.168.56.56:4000
+
+3. **Reprovisioning**:
+   If you make changes to the playbook or need to re-run the setup:
+   ```bash
+   vagrant provision
+   ```
+
+4. **SSH into the VM**:
+   To access the virtual machine shell:
+   ```bash
+   vagrant ssh
+   ```
 
 ## License
 
