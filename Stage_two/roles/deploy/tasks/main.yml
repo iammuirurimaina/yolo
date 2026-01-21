@@ -21,6 +21,10 @@
     variables:
       project_root: "/home/vagrant/yolo"
       server_ip: "192.168.56.56"
+      mongo_port: 27017
+      backend_port: 4000
+      frontend_port: 3000
+      network_name: "yolo-network"
   register: terraform_output
 
 - name: Show Terraform Output

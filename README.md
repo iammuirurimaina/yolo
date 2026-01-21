@@ -126,43 +126,48 @@ docker-compose ps mongodb
 docker-compose logs mongodb
 ```
 
-## Deployment with Vagrant and Ansible
+## Deployment
 
-This project includes a fully automated deployment setup using Vagrant and Ansible.
+This project supports two deployment stages using Vagrant and Ansible.
 
-### Prerequisites
-- Vagrant installed
-- VirtualBox installed
+### Stage 1: Ansible Only
 
-### Steps to Deploy
+In this stage, Ansible is used for both server configuration and application deployment (using Docker modules).
 
-1. **Initialize the VM**:
-   Navigate to the project root and run:
-   ```bash
-   vagrant up
-   ```
-   This command will:
-   - Provision an Ubuntu 20.04 VM.
-   - Install Docker, Git, and other dependencies.
-   - Clone the repository inside the VM.
-   - Build and run the MongoDB, Backend, and Frontend containers.
+1.  **Switch to Master Branch**:
+    ```bash
+    git checkout master
+    ```
+2.  **Run Vagrant**:
+    ```bash
+    vagrant up
+    ```
 
-2. **Access the Application**:
-   Once the provisioning is complete, the application will be available at:
-   - **Frontend**: http://192.168.56.56:3000
-   - **Backend API**: http://192.168.56.56:4000
+### Stage 2: Ansible + Terraform
 
-3. **Reprovisioning**:
-   If you make changes to the playbook or need to re-run the setup:
-   ```bash
-   vagrant provision
-   ```
+In this stage, Ansible configures the server and installs Terraform, which then provisions the Docker resources.
 
-4. **SSH into the VM**:
-   To access the virtual machine shell:
-   ```bash
-   vagrant ssh
-   ```
+1.  **Switch to Stage_two Branch**:
+    ```bash
+    git checkout Stage_two
+    ```
+2.  **Run Vagrant**:
+    ```bash
+    vagrant up
+    ```
+
+### Accessing the Application (Both Stages)
+
+Once provisioning is complete, the application is available at:
+-   **Frontend**: http://192.168.56.56:3000
+-   **Backend API**: http://192.168.56.56:4000
+
+### Reprovisioning
+
+If you make changes to the playbooks or Terraform files:
+```bash
+vagrant provision
+```
 
 ## License
 

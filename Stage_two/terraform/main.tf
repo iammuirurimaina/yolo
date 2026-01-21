@@ -9,18 +9,69 @@ terraform {
 
 provider "docker" {}
 
+# Variables
 variable "project_root" {
   type = string
-  default = "/home/vagrant/yolo"
 }
 
 variable "server_ip" {
   type = string
-  default = "192.168.56.56"
 }
 
+variable "mongo_image" {
+  type    = string
+  default = "mongo:7.0"
+}
+
+variable "mongo_container_name" {
+  type    = string
+  default = "yolo-mongodb"
+}
+
+variable "mongo_port" {
+  type    = number
+  default = 27017
+}
+
+variable "backend_image_name" {
+  type    = string
+  default = "yolo-backend:latest"
+}
+
+variable "backend_container_name" {
+  type    = string
+  default = "yolo-backend"
+}
+
+variable "backend_port" {
+  type    = number
+  default = 4000
+}
+
+variable "frontend_image_name" {
+  type    = string
+  default = "yolo-frontend:latest"
+}
+
+variable "frontend_container_name" {
+  type    = string
+  default = "yolo-frontend"
+}
+
+variable "frontend_port" {
+  type    = number
+  default = 3000
+}
+
+variable "network_name" {
+  type    = string
+  default = "yolo-network"
+}
+
+# Resources
+
 resource "docker_network" "yolo_network" {
-  name = "yolo-network"
+  name = var.network_name
 }
 
 resource "docker_volume" "mongodb_data" {
@@ -32,12 +83,12 @@ resource "docker_volume" "mongodb_config" {
 }
 
 resource "docker_image" "mongo" {
-  name         = "mongo:7.0"
+  name         = var.mongo_image
   keep_locally = true
 }
 
 resource "docker_container" "mongodb" {
-  name  = "yolo-mongodb"
+  name  = var.mongo_container_name
   image = docker_image.mongo.image_id
   restart = "unless-stopped"
   
@@ -47,7 +98,7 @@ resource "docker_container" "mongodb" {
   
   ports {
     internal = 27017
-    external = 27017
+    external = var.mongo_port
   }
   
   volumes {
@@ -66,14 +117,14 @@ resource "docker_container" "mongodb" {
 }
 
 resource "docker_image" "backend" {
-  name = "yolo-backend:latest"
+  name = var.backend_image_name
   build {
     context = "${var.project_root}/backend"
   }
 }
 
 resource "docker_container" "backend" {
-  name  = "yolo-backend"
+  name  = var.backend_container_name
   image = docker_image.backend.image_id
   restart = "unless-stopped"
   
@@ -83,12 +134,12 @@ resource "docker_container" "backend" {
   
   ports {
     internal = 4000
-    external = 4000
+    external = var.backend_port
   }
   
   env = [
     "PORT=4000",
-    "MONGODB_URI=mongodb://yolo-mongodb:27017/yolo",
+    "MONGODB_URI=mongodb://${var.mongo_container_name}:27017/yolo",
     "NODE_ENV=production"
   ]
   
@@ -98,17 +149,17 @@ resource "docker_container" "backend" {
 }
 
 resource "docker_image" "frontend" {
-  name = "yolo-frontend:latest"
+  name = var.frontend_image_name
   build {
     context = "${var.project_root}/client"
     build_args = {
-      REACT_APP_API_URL = "http://${var.server_ip}:4000"
+      REACT_APP_API_URL = "http://${var.server_ip}:${var.backend_port}"
     }
   }
 }
 
 resource "docker_container" "frontend" {
-  name  = "yolo-frontend"
+  name  = var.frontend_container_name
   image = docker_image.frontend.image_id
   restart = "unless-stopped"
   
@@ -118,11 +169,11 @@ resource "docker_container" "frontend" {
   
   ports {
     internal = 80
-    external = 3000
+    external = var.frontend_port
   }
   
   env = [
-    "REACT_APP_API_URL=http://${var.server_ip}:4000"
+    "REACT_APP_API_URL=http://${var.server_ip}:${var.backend_port}"
   ]
   
   depends_on = [
