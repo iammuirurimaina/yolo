@@ -1,0 +1,31 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    repo_url: "https://github.com/iammuirurimaina/yolo.git"
+    project_root: "/home/vagrant/yolo"
+
+  tasks:
+    - name: Setup Environment (Docker & Git)
+      block:
+        - include_role:
+            name: common
+      tags: setup
+
+    - name: Clone Repository
+      block:
+        - include_role:
+            name: clone
+      tags: clone
+
+    - name: Install Terraform
+      block:
+        - include_role:
+            name: terraform_install
+      tags: terraform_install
+
+    - name: Deploy with Terraform
+      block:
+        - include_role:
+            name: deploy
+      tags: deploy

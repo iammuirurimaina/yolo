@@ -1,0 +1,28 @@
+---
+- name: Create terraform directory
+  file:
+    path: /home/vagrant/terraform
+    state: directory
+    owner: vagrant
+    group: vagrant
+
+- name: Copy Terraform files
+  copy:
+    src: ../terraform/
+    dest: /home/vagrant/terraform/
+    owner: vagrant
+    group: vagrant
+
+- name: Apply Terraform
+  community.general.terraform:
+    project_path: /home/vagrant/terraform
+    state: present
+    force_init: true
+    variables:
+      project_root: "/home/vagrant/yolo"
+      server_ip: "192.168.56.56"
+  register: terraform_output
+
+- name: Show Terraform Output
+  debug:
+    var: terraform_output
