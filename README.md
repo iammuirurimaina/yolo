@@ -1,174 +1,54 @@
 # Yolo E-Commerce Platform
 
-A full-stack MERN (MongoDB, Express, React, Node.js) e-commerce application for managing products.
+## 🚀 Live Application
+**[PASTE YOUR LIVE GKE FRONTEND URL HERE]**
+*(Example: http://35.123.45.67)*
+
+## Overview
+A full-stack MERN (MongoDB, Express, React, Node.js) e-commerce application for managing products. This repository contains the source code and Kubernetes manifests for deploying the application on Google Kubernetes Engine (GKE) using proper orchestration practices.
 
 ## Features
+- **Orchestration**: Fully deployed on Kubernetes (GKE).
+- **Persistence**: MongoDB utilizes `StatefulSets` with persistent storage to ensure data safety.
+- **Exposure**: LoadBalancers used for public access.
+- **Microservices**: Decoupled Frontend, Backend, and Database.
 
-- Product listing and management
-- Add, edit, and delete products
-- Product detail views
-- Persistent data storage with MongoDB
-- RESTful API backend
-- Modern React frontend
+## Repository Structure
+- `k8s/`: Kubernetes manifest files (YAML).
+- `backend/`: Node.js/Express API source code.
+- `client/`: React Frontend source code.
+- `ip4explanation.md`: Detailed documentation of the Kubernetes implementation and design choices.
 
-## Prerequisites
+## GKE Deployment
+To deploy this application to your own GKE cluster, see the detailed instructions in [ip4explanation.md](./ip4explanation.md).
 
-- Docker and Docker Compose installed
-- Git (for cloning the repository)
-
-## Quick Start with Docker
-
-### 1. Clone the Repository
-
-```bash
-git clone <repository-url>
-cd yolo
-```
-
-### 2. Build and Run with Docker Compose
-
-```bash
-# Build and start all services in detached mode
-docker-compose up -d --build
-```
-
-### 3. Access the Application
-
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:4000
-- **MongoDB**: localhost:27017
-
-### 4. Stop the Application
-
-```bash
-# Stop containers
-docker-compose down
-
-# Stop and remove volumes (removes database data)
-docker-compose down -v
-```
-
-## Docker Services
-
-The application consists of three services:
-
-1. **mongodb**: MongoDB database server (port 27017)
-2. **backend**: Express.js API server (port 4000)
-3. **frontend**: React development server (port 3000)
-
-## Development
-
-### View Logs
-
-```bash
-# All services
-docker-compose logs -f
-
-# Specific service
-docker-compose logs -f backend
-docker-compose logs -f frontend
-```
-
-### Stop Services
-
-```bash
-# Stop containers (keeps data)
-docker-compose down
-
-# Stop and remove volumes (clears database)
-docker-compose down -v
-```
-
-### Restart Services
-
-```bash
-docker-compose restart
-```
-
-### Rebuild After Code Changes
-
-```bash
-docker-compose up -d --build
-```
-
-## API Endpoints
-
-- `GET /api/products` - Get all products
-- `POST /api/products` - Create a product
-- `PUT /api/products/:id` - Update a product
-- `DELETE /api/products/:id` - Delete a product
-
-## Troubleshooting
-
-### Port Already in Use
-
-If ports 3000, 4000, or 27017 are already in use, stop the conflicting services or modify port mappings in `docker-compose.yml`.
-
-### Services Not Starting
-
-```bash
-# Check service status
-docker-compose ps
-
-# View error logs
-docker-compose logs
-
-# Rebuild from scratch
-docker-compose down -v
-docker-compose up -d --build
-```
-
-### Database Connection Issues
-
-Ensure MongoDB container is healthy:
-```bash
-docker-compose ps mongodb
-docker-compose logs mongodb
-```
-
-## Deployment
-
-This project supports two deployment stages using Vagrant and Ansible.
-
-### Stage 1: Ansible Only
-
-In this stage, Ansible is used for both server configuration and application deployment (using Docker modules).
-
-1.  **Switch to Master Branch**:
+### Quick Summary
+1.  **Deploy Manifests**:
     ```bash
-    git checkout master
+    kubectl apply -f k8s/
     ```
-2.  **Run Vagrant**:
+2.  **Get Backend IP**:
     ```bash
-    vagrant up
+    kubectl get svc backend-service
+    ```
+3.  **Build Frontend with IP**:
+    ```bash
+    docker build --build-arg REACT_APP_API_URL=http://<BACKEND_IP>:4000 -t <your-repo>/yolo-frontend:v1 ./client
+    docker push <your-repo>/yolo-frontend:v1
+    ```
+4.  **Restart Frontend**:
+    ```bash
+    kubectl rollout restart deployment frontend
     ```
 
-### Stage 2: Ansible + Terraform
-
-In this stage, Ansible configures the server and installs Terraform, which then provisions the Docker resources.
-
-1.  **Switch to Stage_two Branch**:
-    ```bash
-    git checkout Stage_two
-    ```
-2.  **Run Vagrant**:
-    ```bash
-    vagrant up
-    ```
-
-### Accessing the Application (Both Stages)
-
-Once provisioning is complete, the application is available at:
--   **Frontend**: http://192.168.56.56:3000
--   **Backend API**: http://192.168.56.56:4000
-
-### Reprovisioning
-
-If you make changes to the playbooks or Terraform files:
-```bash
-vagrant provision
-```
+## Local Development (Docker Compose)
+1. **Build and Run**:
+   ```bash
+   docker-compose up -d --build
+   ```
+2. **Access**:
+   - Frontend: http://localhost:3000
+   - Backend: http://localhost:4000
 
 ## License
-
 MIT
