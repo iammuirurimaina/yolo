@@ -1,8 +1,5 @@
 # Yolo E-Commerce Platform
 
-## 🚀 Live Application
-**[PASTE YOUR LIVE GKE FRONTEND URL HERE]**
-*(Example: http://35.123.45.67)*
 
 ## Overview
 A full-stack MERN (MongoDB, Express, React, Node.js) e-commerce application for managing products. This repository contains the source code and Kubernetes manifests for deploying the application on Google Kubernetes Engine (GKE) using proper orchestration practices.

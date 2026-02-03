@@ -14,8 +14,6 @@ I utilized the `v1` tag for our initial release:
 - `ianmaina/yolo-backend:v1`
 - `ianmaina/yolo-frontend:v1`
 
-**Reasoning**:
-Using semantic versioning (or at least explicit version tags like `v1`) is a best practice over using `latest`. It ensures that deployments are reproducible and that I can rollback to a specific version if needed.
 
 ### Build Process
 - **Backend**: Built from the `backend/` directory using the Node.js 18 Alpine image.
@@ -28,7 +26,7 @@ To achieve a robust and scalable architecture, I implemented the following Kuber
 
 1.  **StatefulSet for MongoDB**:
     *   **Reasoning**: I chose a `StatefulSet` over a standard Deployment for the database. StatefulSets provide stable network identities (`mongo-0`) and stable persistent storage. This ensures that if the database pod restarts, it reattaches to the *same* storage volume, preventing data loss—a critical requirement for any storage solution.
-    *   **Bonus Implementation**: This directly addresses the assignment's bonus objective.
+    *   
 
 2.  **Deployments for Application Layers**:
     *   **Reasoning**: For the Backend and Frontend, I used `Deployments`. These components are stateless; if a pod dies, it can be replaced by any new pod without losing data. This allows for easy scaling (just increase `replicas`).
